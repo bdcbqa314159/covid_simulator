@@ -10,8 +10,8 @@ Location::Location()
 Location::Location(double nx, double ny) : x_(nx), y_(ny) {}
 
 bool Location::move_toward(Location destination, double howFar) {
-  double dx = destination.x_ - x;
-  double dy = destination.y_ - y;
+  double dx = destination.x_ - x_;
+  double dy = destination.y_ - y_;
   double theta = atan2(dy, dx);
 
   double distance = sqrt(dx * dx + dy * dy);
@@ -28,8 +28,8 @@ bool Location::move_toward(Location destination, double howFar) {
 }
 
 double Location::get_distance(Location destination) {
-  double dx = destination.x_ - x;
-  double dy = destination.y_ - y;
+  double dx = destination.x_ - x_;
+  double dy = destination.y_ - y_;
 
   double distance = sqrt(dx * dx + dy * dy);
 
