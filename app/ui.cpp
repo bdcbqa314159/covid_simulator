@@ -119,7 +119,7 @@ static void activate(GtkApplication *app, gpointer user_main_func) {
   simmain();
 }
 
-void ui_redraw(Person *people, int numpeople, int *history, int historylength) {
+void ui_redraw(Person *people, int numpeople, std::vector<int> &history) {
 
   clear_surface();
 
@@ -132,7 +132,9 @@ void ui_redraw(Person *people, int numpeople, int *history, int historylength) {
     draw_person(cr, drawing_area, &(people[i]));
   }
 
-  for (int i = 0; i < historylength; i++) {
+  size_t historylength = history.size();
+
+  for (size_t i = 0; i < historylength; ++i) {
     draw_history_bar(cr, drawing_area, i, historylength, history[i]);
   }
 

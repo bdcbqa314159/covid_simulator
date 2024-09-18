@@ -30,10 +30,8 @@ int sim_main() {
   // "flattening the curve"
   // this hitory array is the curve for stores the number
   // of current infections at each hour in the simulation
-  int infection_history[SIM_HOURS];
 
-  // zero out the history
-  memset(infection_history, 0, sizeof(infection_history));
+  std::vector<int> infection_history(SIM_HOURS, 0);
 
   // initial infections
   for (int i = 0; i < INITIAL_INFECTIONS; i++) {
@@ -44,7 +42,7 @@ int sim_main() {
   for (int i = 0; i < SIM_HOURS; i++) {
     // redraw the UI, so you can see it happen
     if ((i % 2) == 0) {
-      ui_redraw(people, NUM_PEOPLE, infection_history, SIM_HOURS);
+      ui_redraw(people, NUM_PEOPLE, infection_history);
     }
 
     // move people
@@ -94,7 +92,7 @@ int sim_main() {
 
     if ((i % 10) == 0 || num_infected == 0) {
       std::cout << std::fixed;
-      std::cout << std::setprecision(3);
+      std::cout << std::setprecision(2);
       double ratio = num_dead * 100. / NUM_PEOPLE;
 
       std::cout << num_vulnerable << "\t" << num_infected << "\t" << num_immune
