@@ -1,9 +1,8 @@
 #include <cassert>
-#include <cmath>
+#include <cstdio>
 #include <cstdlib>
-#include <iostream>
+#include <cstring>
 
-#include "location.hpp"
 #include "person.hpp"
 #include "simulator.hpp"
 #include "ui.hpp"
