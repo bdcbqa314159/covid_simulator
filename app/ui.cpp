@@ -6,7 +6,7 @@
 #define WINDOW_X 500
 #define WINDOW_Y 500
 
-static cairo_surface_t *surface = NULL;
+static cairo_surface_t *surface = nullptr;
 static GtkWidget *drawing_area;
 
 static void clear_surface() {
@@ -98,10 +98,10 @@ static void activate(GtkApplication *app, gpointer user_main_func) {
   gtk_window_set_title(GTK_WINDOW(window), "COVID-19 Animation");
 
   // enable window closing
-  g_signal_connect(window, "destroy", G_CALLBACK(close_window), NULL);
+  g_signal_connect(window, "destroy", G_CALLBACK(close_window), nullptr);
 
   // create a new frame
-  frame = gtk_frame_new(NULL);
+  frame = gtk_frame_new(nullptr);
   gtk_container_add(GTK_CONTAINER(window), frame);
 
   // create a new drawing area in the frame
@@ -110,9 +110,9 @@ static void activate(GtkApplication *app, gpointer user_main_func) {
   gtk_container_add(GTK_CONTAINER(frame), drawing_area);
 
   /* Signals used to handle the backing surface */
-  g_signal_connect(drawing_area, "draw", G_CALLBACK(draw_callback), NULL);
+  g_signal_connect(drawing_area, "draw", G_CALLBACK(draw_callback), nullptr);
   g_signal_connect(drawing_area, "configure-event",
-                   G_CALLBACK(configure_event_callback), NULL);
+                   G_CALLBACK(configure_event_callback), nullptr);
 
   gtk_widget_show_all(window);
   clear_surface();
@@ -153,7 +153,7 @@ int start_ui(sim_func_t simfunc) {
 
   app = gtk_application_new("com.me", G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect(app, "activate", G_CALLBACK(activate), (gpointer)simfunc);
-  result = g_application_run(G_APPLICATION(app), 0, NULL);
+  result = g_application_run(G_APPLICATION(app), 0, nullptr);
   g_object_unref(app);
 
   return result;
