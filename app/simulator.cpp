@@ -1,7 +1,8 @@
 #include <cassert>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iomanip>
+#include <iostream>
 
 #include "person.hpp"
 #include "simulator.hpp"
@@ -93,19 +94,25 @@ int sim_main() {
     saturated = (num_infected > SATURATION_THRESHOLD);
 
     if ((i % 10) == 0 || num_infected == 0) {
-      printf("%i\t%i\t%i\t%i(%lf%%)\n", num_vulnerable, num_infected,
-             num_immune, num_dead, (num_dead * 100.0 / NUM_PEOPLE));
+      std::cout << std::fixed;
+      std::cout << std::setprecision(3);
+      double ratio = num_dead * 100. / NUM_PEOPLE;
+
+      std::cout << num_vulnerable << "\t" << num_infected << "\t" << num_immune
+                << "\t" << num_dead << "\t" << ratio << "%\n";
     }
     infection_history[i] = num_infected;
     if (num_infected == 0)
       break;
   }
-  printf("Peak infections - %i\n", max_infected_at_once);
+  std::cout << "Peak infections - " << max_infected_at_once << "\n";
   return 0;
 }
 
 int main(int argc, char const *argv[]) {
-  // printf("%s\n", "Hello");
-  return start_ui(sim_main);
+  int out = start_ui(sim_main);
+
+  assert(out == 0);
+
   return 0;
 }
