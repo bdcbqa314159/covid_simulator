@@ -17,8 +17,11 @@ bool saturated = false;
 int sim_main()
 {
   // setup the simuation
-  Person people[NUM_PEOPLE];
-  PopularPlacesModel models[NUM_PEOPLE];
+  // Person people[NUM_PEOPLE];
+  // PopularPlacesModel models[NUM_PEOPLE];
+
+  std::vector<Person> people(NUM_PEOPLE);
+  std::vector<PopularPlacesModel> models(NUM_PEOPLE);
 
   // "flattening the curve"
   // this hitory array is the curve for stores the number
@@ -38,7 +41,7 @@ int sim_main()
     // redraw the UI, so you can see it happen
     if ((i % 2) == 0)
     {
-      ui_redraw(people, NUM_PEOPLE, infection_history);
+      ui_redraw(people, infection_history);
     }
 
     // move people
@@ -121,6 +124,9 @@ int main(int argc, char const *argv[])
   int out = start_ui(sim_main);
 
   assert(out == 0);
+
+  std::cout << "All good, simulation ended successfully\n";
+  std::cout << "You can close the window now\n";
 
   return 0;
 }

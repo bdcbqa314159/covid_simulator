@@ -3,7 +3,7 @@
 #define X_LIMIT 5000
 #define Y_LIMIT 5000
 
-#define SIM_HOURS 200
+#define SIM_HOURS 1000
 #define NUM_PEOPLE 1000
 
 enum disease_status

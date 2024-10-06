@@ -9,7 +9,8 @@
 static cairo_surface_t *surface = nullptr;
 static GtkWidget *drawing_area;
 
-static void clear_surface() {
+static void clear_surface()
+{
   cairo_t *cr;
 
   cr = cairo_create(surface);
@@ -23,7 +24,8 @@ static void clear_surface() {
 /* Create a new surface to store our drawing */
 static gboolean configure_event_callback(GtkWidget *widget,
                                          GdkEventConfigure *event,
-                                         gpointer data) {
+                                         gpointer data)
+{
   if (surface)
     cairo_surface_destroy(surface);
 
@@ -40,7 +42,8 @@ static gboolean configure_event_callback(GtkWidget *widget,
  * signal receives a ready-to-be-used cairo_t
  * that is already clipped to only draw the exposed areas of the widget
  */
-static gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
+static gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
+{
   cairo_set_source_surface(cr, surface, 0, 0);
   cairo_paint(cr);
 
@@ -48,13 +51,17 @@ static gboolean draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data) {
 }
 
 static void draw_history_bar(cairo_t *cr, GtkWidget *widget, int x, int total,
-                             int y) {
+                             int y)
+{
   double gx = WINDOW_X + (x * WINDOW_X * 1.0 / total);
   double gy = WINDOW_Y - (y * WINDOW_X * 1.0 / NUM_PEOPLE);
 
-  if (y > SATURATION_THRESHOLD) {
+  if (y > SATURATION_THRESHOLD)
+  {
     cairo_set_source_rgb(cr, 50, 0, 0);
-  } else {
+  }
+  else
+  {
     cairo_set_source_rgb(cr, 0, 0, 0);
   }
 
@@ -63,11 +70,13 @@ static void draw_history_bar(cairo_t *cr, GtkWidget *widget, int x, int total,
 }
 
 /* Draw a rectangle on the surface at the given position */
-static void draw_person(cairo_t *cr, GtkWidget *widget, Person *p) {
-  double x = p->location.get_x() * WINDOW_X * 1.0 / X_LIMIT;
-  double y = p->location.get_y() * WINDOW_Y * 1.0 / Y_LIMIT;
+static void draw_person(cairo_t *cr, GtkWidget *widget, Person &p)
+{
+  double x = p.location.get_x() * WINDOW_X * 1.0 / X_LIMIT;
+  double y = p.location.get_y() * WINDOW_Y * 1.0 / Y_LIMIT;
 
-  switch (p->status) {
+  switch (p.status)
+  {
   case DEAD:
     cairo_set_source_rgba(cr, 1.0, 0, 0, 1.0);
     break;
@@ -88,7 +97,8 @@ static void draw_person(cairo_t *cr, GtkWidget *widget, Person *p) {
 
 static void close_window(void) { exit(1); };
 
-static void activate(GtkApplication *app, gpointer user_main_func) {
+static void activate(GtkApplication *app, gpointer user_main_func)
+{
   GtkWidget *window;
   GtkWidget *frame;
 
@@ -119,8 +129,10 @@ static void activate(GtkApplication *app, gpointer user_main_func) {
   simmain();
 }
 
-void ui_redraw(Person *people, int numpeople, std::vector<int> &history) {
+void ui_redraw(std::vector<Person> &people, std::vector<int> &history)
+{
 
+  int numpeople = people.size();
   clear_surface();
 
   cairo_t *cr;
@@ -128,13 +140,15 @@ void ui_redraw(Person *people, int numpeople, std::vector<int> &history) {
   /* Paint to the surface, where we store our state */
   cr = cairo_create(surface);
 
-  for (int i = 0; i < numpeople; i++) {
-    draw_person(cr, drawing_area, &(people[i]));
+  for (int i = 0; i < numpeople; i++)
+  {
+    draw_person(cr, drawing_area, people[i]);
   }
 
   size_t historylength = history.size();
 
-  for (size_t i = 0; i < historylength; ++i) {
+  for (size_t i = 0; i < historylength; ++i)
+  {
     draw_history_bar(cr, drawing_area, i, historylength, history[i]);
   }
 
@@ -144,12 +158,14 @@ void ui_redraw(Person *people, int numpeople, std::vector<int> &history) {
   gtk_widget_queue_draw_area(drawing_area, 0, 0, WINDOW_X * 2, WINDOW_Y);
 
   // respond to any events to keep the window working
-  while (gtk_events_pending()) {
+  while (gtk_events_pending())
+  {
     gtk_main_iteration();
   }
 }
 
-int start_ui(sim_func_t simfunc) {
+int start_ui(sim_func_t simfunc)
+{
   GtkApplication *app;
   int result;
 
