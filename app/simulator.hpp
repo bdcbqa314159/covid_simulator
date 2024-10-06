@@ -3,10 +3,16 @@
 #define X_LIMIT 5000
 #define Y_LIMIT 5000
 
-#define SIM_HOURS 5000
+#define SIM_HOURS 200
 #define NUM_PEOPLE 1000
 
-enum disease_status { VULNERABLE, INFECTED, IMMUNE, DEAD };
+enum disease_status
+{
+    VULNERABLE,
+    INFECTED,
+    IMMUNE,
+    DEAD
+};
 
 #define INFECTION_TIME 480
 
@@ -20,5 +26,3 @@ enum disease_status { VULNERABLE, INFECTED, IMMUNE, DEAD };
 #define SATURATION_THRESHOLD (NUM_PEOPLE / 5)
 
 extern bool saturated;
-
-bool try_event(double probability);

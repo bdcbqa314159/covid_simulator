@@ -3,6 +3,7 @@
 #include "person.hpp"
 #include "simulator.hpp"
 #include <cstdlib>
+#include "utilities.hpp"
 
 static Location popularPlaces[NUM_POPULAR_PLACES];
 
