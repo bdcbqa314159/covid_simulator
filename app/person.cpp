@@ -1,23 +1,28 @@
 #include "person.hpp"
-#include "ppmodel.hpp"
+// #include "ppmodel.hpp"
 
-Person::Person() {
-  PopularPlacesModel *model = new PopularPlacesModel();
-  mobility_model = (MobilityModel *)model;
-  mobility_model->setPerson(this);
+Person::Person()
+{
+  // PopularPlacesModel *model = new PopularPlacesModel();
+  // mobility_model = (MobilityModel *)model;
+  // mobility_model->setPerson(this);
   status = VULNERABLE;
   disease_counter = INFECTION_TIME;
 }
 
-bool Person::infect() {
-  if (status == VULNERABLE) {
+bool Person::infect()
+{
+  if (status == VULNERABLE)
+  {
     status = INFECTED;
     return true;
-  } else
+  }
+  else
     return false;
 }
 
-bool Person::try_infect(Person other_person) {
+bool Person::try_infect(Person other_person)
+{
   if (other_person.status != INFECTED)
     return false;
   if (location.get_distance(other_person.location) > INFECTION_PROXIMITY)
@@ -27,10 +32,13 @@ bool Person::try_infect(Person other_person) {
   return false;
 }
 
-void Person::progress_disease() {
-  if (status == INFECTED) {
+void Person::progress_disease()
+{
+  if (status == INFECTED)
+  {
     disease_counter--;
-    if (disease_counter <= 0) {
+    if (disease_counter <= 0)
+    {
       double fatality_rate = NORMAL_FATALITY_RATE;
       if (saturated)
         fatality_rate = SATURED_FATALITY_RATE;

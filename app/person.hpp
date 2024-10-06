@@ -1,12 +1,13 @@
 #pragma once
 
 #include "location.hpp"
-#include "mobility_model.hpp"
+// #include "mobility_model.hpp"
 #include "simulator.hpp"
 
 class MobilityModel;
 
-class Person {
+class Person
+{
 public:
   Person();
   bool infect();
@@ -15,7 +16,7 @@ public:
   bool is_alive();
 
   Location location;
-  MobilityModel *mobility_model;
+  // MobilityModel *mobility_model;
   disease_status status;
   int disease_counter;
 };

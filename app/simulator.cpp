@@ -7,6 +7,7 @@
 #include "person.hpp"
 #include "simulator.hpp"
 #include "ui.hpp"
+#include "ppmodel.hpp"
 
 using namespace std;
 
@@ -14,7 +15,8 @@ bool saturated = false;
 
 u_int32_t arc4random_uniform(u_int32_t upper_bound);
 
-bool try_event(double probability) {
+bool try_event(double probability)
+{
   assert(probability >= 0.0 && probability <= 1.0);
   const int resolution = 100000;
 
@@ -23,9 +25,11 @@ bool try_event(double probability) {
   return rnum <= probability;
 }
 
-int sim_main() {
+int sim_main()
+{
   // setup the simuation
   Person people[NUM_PEOPLE];
+  PopularPlacesModel models[NUM_PEOPLE];
 
   // "flattening the curve"
   // this hitory array is the curve for stores the number
@@ -34,30 +38,40 @@ int sim_main() {
   std::vector<int> infection_history(SIM_HOURS, 0);
 
   // initial infections
-  for (int i = 0; i < INITIAL_INFECTIONS; i++) {
+  for (int i = 0; i < INITIAL_INFECTIONS; i++)
+  {
     people[i].status = INFECTED;
   }
   int max_infected_at_once = 0;
 
-  for (int i = 0; i < SIM_HOURS; i++) {
+  for (int i = 0; i < SIM_HOURS; i++)
+  {
     // redraw the UI, so you can see it happen
-    if ((i % 2) == 0) {
+    if ((i % 2) == 0)
+    {
       ui_redraw(people, NUM_PEOPLE, infection_history);
     }
 
     // move people
-    for (int p = 0; p < NUM_PEOPLE; p++) {
-      if (people[p].is_alive()) {
-        people[p].mobility_model->move();
+    for (int p = 0; p < NUM_PEOPLE; p++)
+    {
+      if (people[p].is_alive())
+      {
+        models[p].move(people[p]);
+        // people[p].mobility_model->move();
         people[p].progress_disease();
       }
     }
 
     // try to infect
-    for (int p = 0; p < NUM_PEOPLE; p++) {
-      if (people[p].is_alive()) {
-        for (int p2 = 0; p2 < NUM_PEOPLE; p2++) {
-          if (p != p2 && people[p2].is_alive()) {
+    for (int p = 0; p < NUM_PEOPLE; p++)
+    {
+      if (people[p].is_alive())
+      {
+        for (int p2 = 0; p2 < NUM_PEOPLE; p2++)
+        {
+          if (p != p2 && people[p2].is_alive())
+          {
             people[p].try_infect(people[p2]);
           }
         }
@@ -69,28 +83,35 @@ int sim_main() {
     int num_immune = 0;
     int num_dead = 0;
     int num_vulnerable = 0;
-    for (int p = 0; p < NUM_PEOPLE; p++) {
-      if (!people[p].is_alive()) {
+    for (int p = 0; p < NUM_PEOPLE; p++)
+    {
+      if (!people[p].is_alive())
+      {
         num_dead++;
       }
-      if (people[p].status == INFECTED) {
+      if (people[p].status == INFECTED)
+      {
         num_infected++;
       }
-      if (people[p].status == IMMUNE) {
+      if (people[p].status == IMMUNE)
+      {
         num_immune++;
       }
-      if (people[p].status == VULNERABLE) {
+      if (people[p].status == VULNERABLE)
+      {
         num_vulnerable++;
       }
     }
-    if (num_infected > max_infected_at_once) {
+    if (num_infected > max_infected_at_once)
+    {
       max_infected_at_once = num_infected;
     }
 
     // set whether or not the medical system is currently saturated
     saturated = (num_infected > SATURATION_THRESHOLD);
 
-    if ((i % 10) == 0 || num_infected == 0) {
+    if ((i % 10) == 0 || num_infected == 0)
+    {
       std::cout << std::fixed;
       std::cout << std::setprecision(2);
       double ratio = num_dead * 100. / NUM_PEOPLE;
@@ -106,7 +127,8 @@ int sim_main() {
   return 0;
 }
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char const *argv[])
+{
   int out = start_ui(sim_main);
 
   assert(out == 0);

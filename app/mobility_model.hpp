@@ -2,12 +2,13 @@
 
 class Person;
 
-class MobilityModel {
+class MobilityModel
+{
 protected:
-  Person *person;
+  // Person *person;
 
 public:
   MobilityModel();
-  void setPerson(Person *p);
-  virtual void move() = 0;
+  // void setPerson(Person *p);
+  virtual void move(Person &p) = 0;
 };
