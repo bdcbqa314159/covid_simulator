@@ -26,3 +26,4 @@ enum disease_status
 #define SATURATION_THRESHOLD (NUM_PEOPLE / 5)
 
 extern bool saturated;
+int sim_main();

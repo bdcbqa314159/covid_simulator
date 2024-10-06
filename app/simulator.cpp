@@ -116,6 +116,8 @@ int sim_main()
       break;
   }
   std::cout << "Peak infections - " << max_infected_at_once << "\n";
+  std::cout << "All good, simulation ended successfully\n";
+  std::cout << "You can close the window now\n";
   return 0;
 }
 
@@ -124,9 +126,6 @@ int main(int argc, char const *argv[])
   int out = start_ui(sim_main);
 
   assert(out == 0);
-
-  std::cout << "All good, simulation ended successfully\n";
-  std::cout << "You can close the window now\n";
 
   return 0;
 }
